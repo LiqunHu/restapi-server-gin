@@ -2,6 +2,7 @@ package test
 
 import (
 	"github.com/LiqunHu/restapi-server-gin/models/test"
+	"github.com/LiqunHu/restapi-server-gin/pkg/util"
 	"github.com/gin-gonic/gin"
 )
 
@@ -29,11 +30,7 @@ func GetTestById(c *gin.Context) {
 		return
 	}
 
-	c.JSON(200, gin.H{
-		"errno": "0",
-		"msg":   "success",
-		"info":  test,
-	})
+	c.JSON(util.Success(test))
 }
 
 func CreateTest(c *gin.Context) {
