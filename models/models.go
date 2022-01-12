@@ -17,8 +17,8 @@ var GDB *gorm.DB
 type Model struct {
 	state     string
 	version   int
-	CreatedAt time.Time `gorm:autoCreateTime"`
-	UpdatedAt time.Time `gorm:autoUpdateTime"`
+	CreatedAt time.Time `gorm:"autoCreateTime"`
+	UpdatedAt time.Time `gorm:"autoUpdateTime"`
 }
 
 // Setup initializes the database instance
