@@ -15,18 +15,12 @@ func Test(c *gin.Context) {
 func GetTestById(c *gin.Context) {
 	var doc GetTestByIdIN
 	if err := c.ShouldBind(&doc); err != nil {
-		c.JSON(700, gin.H{
-			"errno": "-1",
-			"msg":   err.Error(),
-		})
+		c.JSON(util.Fail(err))
 		return
 	}
 	test, err := test.GetTestByID(doc.Id)
 	if err != nil {
-		c.JSON(700, gin.H{
-			"errno": "-1",
-			"msg":   err.Error(),
-		})
+		c.JSON(util.Fail(err))
 		return
 	}
 
