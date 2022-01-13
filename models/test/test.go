@@ -2,6 +2,7 @@ package test
 
 import (
 	"github.com/LiqunHu/restapi-server-gin/models"
+	"gorm.io/gorm"
 )
 
 type Test struct {
@@ -28,8 +29,12 @@ func CreatTest(test *Test) error {
 func GetTestByID(id int) (*Test, error) {
 	var test Test
 	err := models.GDB.Where("test_id = ? ", id).First(&test).Error
-	if err != nil {
+	if err != nil && err != gorm.ErrRecordNotFound {
 		return nil, err
+	}
+
+	if err == gorm.ErrRecordNotFound {
+		return nil, nil
 	}
 
 	return &test, nil

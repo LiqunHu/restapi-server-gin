@@ -3,6 +3,7 @@ package e
 var MsgFlags = map[string]string{
 	"SUCCESS": "方法不支持",
 	"ERROR":   "未指定错误",
+	"INPUT":   "请求接口错误",
 }
 
 // GetMsg get error information based on Code
