@@ -38,6 +38,17 @@ func CreateTest(c *gin.Context) {
 	})
 }
 
+func UpdateTestById(c *gin.Context) {
+	var doc UpdateTestIN
+	if err := c.ShouldBind(&doc); err != nil {
+		c.JSON(util.Fail(err))
+		return
+	}
+	var tdata test.Test
+	models.GDB.Model(&tdata).Where("test_id = ?", doc.Id).Updates(test.Test{A: doc.A, B: doc.B, C: doc.C})
+	c.JSON(util.Success(nil))
+}
+
 func DeleteTestById(c *gin.Context) {
 	var doc DeleteTestIN
 	if err := c.ShouldBind(&doc); err != nil {

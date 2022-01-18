@@ -15,8 +15,8 @@ import (
 var GDB *gorm.DB
 
 type Model struct {
-	state     string
-	version   int
+	State     string
+	Version   int
 	CreatedAt time.Time `gorm:"autoCreateTime"`
 	UpdatedAt time.Time `gorm:"autoUpdateTime"`
 }
@@ -39,7 +39,7 @@ func Setup() {
 		log.Fatalf("models.Setup err: %v", err)
 	}
 
-	GDB.Callback().Update().Replace("gorm:autoUpdateTime", updateTimeStampForUpdateCallback)
+	GDB.Callback().Update().Replace("gorm:before_update", updateVersionForUpdateCallback)
 
 	sqlDB, err := GDB.DB()
 	if err != nil {
@@ -50,9 +50,14 @@ func Setup() {
 }
 
 // updateTimeStampForUpdateCallback will set `ModifiedOn` when updating
-func updateTimeStampForUpdateCallback(db *gorm.DB) {
+func updateVersionForUpdateCallback(db *gorm.DB) {
 	if db.Statement.Schema != nil {
 		fmt.Println(db.Statement.Schema)
+		field := db.Statement.Schema.LookUpField("Version")
+		if field != nil {
+			val, _ := field.ValueOf(db.Statement.ReflectValue)
+			db.Statement.SetColumn("Version", val.(int)+1)
+		}
 	}
 	// if _, ok := scope.Get("gorm:update_column"); !ok {
 	// 	scope.SetColumn("ModifiedOn", time.Now().Unix())
