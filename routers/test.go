@@ -13,4 +13,5 @@ func init() {
 	TestHandleMap["/Test/CreateTest"] = test.CreateTest
 	TestHandleMap["/Test/GetTestById"] = test.GetTestById
 	TestHandleMap["/Test/DeleteTestById"] = test.DeleteTestById
+	TestHandleMap["/Test/GetTests"] = test.GetTests
 }

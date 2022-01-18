@@ -1,6 +1,9 @@
 package test
 
 import (
+	"fmt"
+
+	"github.com/LiqunHu/restapi-server-gin/models"
 	"github.com/LiqunHu/restapi-server-gin/models/test"
 	"github.com/LiqunHu/restapi-server-gin/pkg/util"
 	"github.com/gin-gonic/gin"
@@ -47,4 +50,23 @@ func DeleteTestById(c *gin.Context) {
 		return
 	}
 	c.JSON(util.Success(nil))
+}
+
+func GetTests(c *gin.Context) {
+	var tests []TestResult
+	models.GDB.Raw("SELECT a, b, c FROM tbl_test Where test_id > ?", 1).Scan(&tests)
+
+	rows, err := models.GDB.Raw("SELECT a, b, c FROM tbl_test Where test_id > ?", 1).Rows()
+	if err != nil {
+		c.JSON(util.Fail(err))
+		return
+	}
+	defer rows.Close()
+	var tdata TestResult
+	for rows.Next() {
+		models.GDB.ScanRows(rows, &tdata)
+		fmt.Println(tdata)
+	}
+
+	c.JSON(util.Success(tests))
 }
