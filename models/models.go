@@ -59,7 +59,4 @@ func updateVersionForUpdateCallback(db *gorm.DB) {
 			db.Statement.SetColumn("Version", val.(int)+1)
 		}
 	}
-	// if _, ok := scope.Get("gorm:update_column"); !ok {
-	// 	scope.SetColumn("ModifiedOn", time.Now().Unix())
-	// }
 }

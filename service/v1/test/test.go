@@ -40,6 +40,7 @@ func CreateTest(c *gin.Context) {
 
 func UpdateTestById(c *gin.Context) {
 	var doc UpdateTestIN
+	fmt.Println(c.Get("user"))
 	if err := c.ShouldBind(&doc); err != nil {
 		c.JSON(util.Fail(err))
 		return
