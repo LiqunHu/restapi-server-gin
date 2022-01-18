@@ -39,3 +39,11 @@ func GetTestByID(id int) (*Test, error) {
 
 	return &test, nil
 }
+
+func DeleteTestByID(id int) error {
+	err := models.GDB.Delete(&Test{}, id).Error
+	if err != nil {
+		return err
+	}
+	return nil
+}

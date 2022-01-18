@@ -10,6 +10,7 @@ var TestHandleMap map[string]gin.HandlerFunc
 func init() {
 	TestHandleMap = make(map[string]gin.HandlerFunc)
 	TestHandleMap["/Test/Test"] = test.Test
-	TestHandleMap["/Test/GetTestById"] = test.GetTestById
 	TestHandleMap["/Test/CreateTest"] = test.CreateTest
+	TestHandleMap["/Test/GetTestById"] = test.GetTestById
+	TestHandleMap["/Test/DeleteTestById"] = test.DeleteTestById
 }

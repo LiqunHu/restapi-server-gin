@@ -34,3 +34,17 @@ func CreateTest(c *gin.Context) {
 		"TestId": tobj.TestId,
 	})
 }
+
+func DeleteTestById(c *gin.Context) {
+	var doc DeleteTestIN
+	if err := c.ShouldBind(&doc); err != nil {
+		c.JSON(util.Fail(err))
+		return
+	}
+	err := test.DeleteTestByID(doc.Id)
+	if err != nil {
+		c.JSON(util.Fail(err))
+		return
+	}
+	c.JSON(util.Success(nil))
+}
