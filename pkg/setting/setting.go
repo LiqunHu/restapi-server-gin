@@ -8,12 +8,11 @@ import (
 )
 
 type App struct {
-	PageSize int
+	AppName   string
+	DebugFlag bool
+	PageSize  int
 
 	LogSavePath string
-	LogSaveName string
-	LogFileExt  string
-	TimeFormat  string
 }
 
 var AppSetting = &App{}
