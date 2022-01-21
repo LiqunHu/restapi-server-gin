@@ -8,12 +8,13 @@ import (
 	"unsafe"
 
 	"github.com/LiqunHu/restapi-server-gin/pkg/setting"
+	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 	"gopkg.in/natefinch/lumberjack.v2"
 )
 
-func Setup() {
+func Setup(r *gin.Engine) {
 	var cores []zapcore.Core
 	if setting.AppSetting.DebugFlag {
 		cores = append(cores, zapcore.NewCore(consoleEncoder, consoleDebugging, lowPriority))
@@ -44,6 +45,16 @@ func Setup() {
 		zap.Development(),
 		zap.AddCallerSkip(1),
 	).Sugar())
+
+	// Add a ginzap middleware, which:
+	//   - Logs all requests, like a combined access and error log.
+	//   - Logs to stdout.
+	//   - RFC3339 with UTC time format.
+	r.Use(Ginzap(logger().Desugar(), time.RFC3339, true))
+
+	// Logs all panic to error log
+	//   - stack means whether output the stack info.
+	r.Use(RecoveryWithZap(logger().Desugar(), true))
 }
 
 // TimeEncoder time encoder .

@@ -58,7 +58,7 @@ func AUTH() gin.HandlerFunc {
 			}
 			mdFuc := strings.ToUpper(patha[len(patha)-2])
 			println(mdFuc)
-			token2user(c, c.Request.Header["Authorization"][0])
+			result := token2user(c, c.Request.Header["Authorization"][0])
 			fmt.Println(c.Request.Header["Authorization"][0])
 			c.Set("user", "1111111111")
 			c.Next()

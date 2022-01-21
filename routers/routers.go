@@ -3,14 +3,16 @@ package routers
 import (
 	"github.com/gin-gonic/gin"
 
+	"github.com/LiqunHu/restapi-server-gin/pkg/logger"
 	"github.com/LiqunHu/restapi-server-gin/pkg/middleware"
 	"github.com/LiqunHu/restapi-server-gin/service"
 )
 
 func InitRouter() *gin.Engine {
 	r := gin.New()
-	r.Use(gin.Logger())
-	r.Use(gin.Recovery())
+	logger.Setup(r)
+	// r.Use(gin.Logger())
+	// r.Use(gin.Recovery())
 
 	r.POST("/api/auth", service.Echo)
 
