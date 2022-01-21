@@ -7,7 +7,7 @@ require (
 	github.com/go-ini/ini v1.66.2
 	github.com/webx-top/com v0.3.5
 	gorm.io/driver/mysql v1.2.2
-	gorm.io/gorm v1.22.4
+	gorm.io/gorm v1.22.5
 )
 
 require (
@@ -41,6 +41,7 @@ require (
 	google.golang.org/protobuf v1.27.1 // indirect
 	gopkg.in/natefinch/lumberjack.v2 v2.0.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
+	moul.io/zapgorm2 v1.1.1 // indirect
 )
 
 replace github.com/LiqunHu/restapi-server-gin/pkg/setting => ./pkg/setting

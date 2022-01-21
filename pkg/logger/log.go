@@ -8,13 +8,12 @@ import (
 	"unsafe"
 
 	"github.com/LiqunHu/restapi-server-gin/pkg/setting"
-	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 	"gopkg.in/natefinch/lumberjack.v2"
 )
 
-func Setup(r *gin.Engine) {
+func Setup() {
 	var cores []zapcore.Core
 	if setting.AppSetting.DebugFlag {
 		cores = append(cores, zapcore.NewCore(consoleEncoder, consoleDebugging, lowPriority))
@@ -45,16 +44,6 @@ func Setup(r *gin.Engine) {
 		zap.Development(),
 		zap.AddCallerSkip(1),
 	).Sugar())
-
-	// Add a ginzap middleware, which:
-	//   - Logs all requests, like a combined access and error log.
-	//   - Logs to stdout.
-	//   - RFC3339 with UTC time format.
-	r.Use(Ginzap(logger().Desugar(), time.RFC3339, true))
-
-	// Logs all panic to error log
-	//   - stack means whether output the stack info.
-	r.Use(RecoveryWithZap(logger().Desugar(), true))
 }
 
 // TimeEncoder time encoder .
@@ -64,52 +53,52 @@ func TimeEncoder(t time.Time, enc zapcore.PrimitiveArrayEncoder) {
 
 // Debugf log
 func Debugf(msg string, args ...interface{}) {
-	logger().Debugf(msg, args...)
+	Logger().Debugf(msg, args...)
 }
 
 // Debug log
 func Debug(args ...interface{}) {
-	logger().Debug(args...)
+	Logger().Debug(args...)
 }
 
 // Infof log
 func Infof(msg string, args ...interface{}) {
-	logger().Infof(msg, args...)
+	Logger().Infof(msg, args...)
 }
 
 // Info log
 func Info(args ...interface{}) {
-	logger().Info(args...)
+	Logger().Info(args...)
 }
 
 // Errorf log
 func Errorf(msg string, args ...interface{}) {
-	logger().Errorf(msg, args...)
+	Logger().Errorf(msg, args...)
 }
 
 // Error log
 func Error(args ...interface{}) {
-	logger().Error(args...)
+	Logger().Error(args...)
 }
 
 // Warnf log
 func Warnf(msg string, args ...interface{}) {
-	logger().Warnf(msg, args...)
+	Logger().Warnf(msg, args...)
 }
 
 // Warn log
 func Warn(args ...interface{}) {
-	logger().Warn(args...)
+	Logger().Warn(args...)
 }
 
 // Fatalf send log fatalf
 func Fatalf(msg string, args ...interface{}) {
-	logger().Fatalf(msg, args...)
+	Logger().Fatalf(msg, args...)
 }
 
 // Fatal send log fatal
 func Fatal(args ...interface{}) {
-	logger().Fatal(args...)
+	Logger().Fatal(args...)
 }
 
 func getWriter(filename string) io.Writer {
@@ -132,7 +121,7 @@ func getWriter(filename string) io.Writer {
 	return &hook
 }
 
-func logger() *zap.SugaredLogger {
+func Logger() *zap.SugaredLogger {
 	return (*zap.SugaredLogger)(atomic.LoadPointer(&loggerImpl))
 }
 

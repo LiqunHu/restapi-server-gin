@@ -11,6 +11,7 @@ var (
 	consoleDebugging = zapcore.Lock(os.Stdout)
 	consoleEncoder   = zapcore.NewConsoleEncoder(zap.NewDevelopmentEncoderConfig())
 	encoder          = zapcore.NewJSONEncoder(zapcore.EncoderConfig{
+		CallerKey:      "caller",
 		TimeKey:        "event_time",
 		LevelKey:       "level",
 		NameKey:        "logger",

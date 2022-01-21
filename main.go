@@ -6,12 +6,14 @@ import (
 
 	"github.com/LiqunHu/restapi-server-gin/models"
 	"github.com/LiqunHu/restapi-server-gin/pkg/gredis"
+	"github.com/LiqunHu/restapi-server-gin/pkg/logger"
 	"github.com/LiqunHu/restapi-server-gin/pkg/setting"
 	"github.com/LiqunHu/restapi-server-gin/routers"
 )
 
 func init() {
 	setting.Setup()
+	logger.Setup()
 	gredis.Setup()
 	models.Setup()
 }

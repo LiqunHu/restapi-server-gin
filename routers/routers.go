@@ -1,6 +1,8 @@
 package routers
 
 import (
+	"time"
+
 	"github.com/gin-gonic/gin"
 
 	"github.com/LiqunHu/restapi-server-gin/pkg/logger"
@@ -10,9 +12,17 @@ import (
 
 func InitRouter() *gin.Engine {
 	r := gin.New()
-	logger.Setup(r)
 	// r.Use(gin.Logger())
 	// r.Use(gin.Recovery())
+	// Add a ginzap middleware, which:
+	//   - Logs all requests, like a combined access and error log.
+	//   - Logs to stdout.
+	//   - RFC3339 with UTC time format.
+	r.Use(middleware.Ginzap(logger.Logger().Desugar(), time.RFC3339, true))
+
+	// Logs all panic to error log
+	//   - stack means whether output the stack info.
+	r.Use(middleware.RecoveryWithZap(logger.Logger().Desugar(), true))
 
 	r.POST("/api/auth", service.Echo)
 
