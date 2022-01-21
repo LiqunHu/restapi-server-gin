@@ -10,6 +10,7 @@ import (
 type App struct {
 	AppName   string
 	DebugFlag bool
+	SecretKey string
 	PageSize  int
 
 	LogSavePath string
