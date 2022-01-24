@@ -84,10 +84,56 @@ func AUTH() gin.HandlerFunc {
 				}
 			}
 
-			result := token2user(c, c.Request.Header["Authorization"][0])
-			logger.Debug(result)
-			fmt.Println(c.Request.Header["Authorization"][0])
-			c.Set("user", "1111111111")
+			patha := strings.Split(c.Request.URL.Path, "/")
+			if len(patha) < 3 {
+				c.JSON(http.StatusUnauthorized, gin.H{
+					"errno": "-1",
+					"msg":   "Auth Failed or session expired",
+				})
+				c.Abort()
+				return
+			}
+			mdFuc := strings.ToUpper(patha[len(patha)-2])
+
+			checkResult := token2user(c, c.Request.Header["Authorization"][0], mdFuc)
+
+			exitFlag := false
+			for k, _ := range apis {
+				if mdFuc == k {
+					exitFlag = true
+				}
+			}
+
+			if exitFlag {
+				if apis[mdFuc] == "1" {
+					if checkResult != 0 {
+						if checkResult == 2 {
+							c.JSON(http.StatusUnauthorized, gin.H{
+								"errno": "-2",
+								"msg":   "Login from other place",
+							})
+							c.Abort()
+							return
+						} else {
+							c.JSON(http.StatusUnauthorized, gin.H{
+								"errno": "-1",
+								"msg":   "Auth Failed or session expired",
+							})
+							c.Abort()
+							return
+						}
+					}
+				}
+			} else {
+				if mdFuc != "AUTH" {
+					c.JSON(http.StatusUnauthorized, gin.H{
+						"errno": "-1",
+						"msg":   "Auth Failed or session expired",
+					})
+					c.Abort()
+					return
+				}
+			}
 			c.Next()
 		} else {
 			c.JSON(http.StatusUnauthorized, gin.H{
@@ -100,7 +146,7 @@ func AUTH() gin.HandlerFunc {
 	}
 }
 
-func token2user(c *gin.Context, token string) int {
+func token2user(c *gin.Context, token string, mdFuc string) int {
 	tokenSplit := strings.Split(token, "_")
 	if len(tokenSplit) != 5 {
 		return -1
@@ -149,19 +195,22 @@ func token2user(c *gin.Context, token string) int {
 			return -1
 		}
 
-		patha := strings.Split(c.Request.URL.Path, "/")
-		if len(patha) < 3 {
-			logger.Error("req url error")
-			return -1
-		}
-		mdFuc := strings.ToUpper(patha[len(patha)-2])
-		println(mdFuc)
+		exist := false
 
-		c.Set("user", "1111111111")
-		logger.Info(uCache)
+		for _, item := range uCache.AuthApis {
+			if item.ApiName == mdFuc {
+				exist = true
+				break
+			}
+		}
+
+		if exist {
+			c.Set("User", uCache.User)
+			return 0
+		}
 	} else {
 		return -1
 	}
 
-	return 0
+	return -1
 }
