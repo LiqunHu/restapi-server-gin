@@ -18,6 +18,17 @@ func init() {
 	models.Setup()
 }
 
+// @title           Rest API
+// @version         1.0
+// @description     This is a sample server celler server.
+
+// @contact.name   Liqun Hu
+// @contact.email  huliquns@126.com
+
+// @host      localhost:8080
+// @BasePath  /api/v1
+
+// @securityDefinitions.basic  BasicAuth
 func main() {
 	router := routers.InitRouter()
 	s := &http.Server{

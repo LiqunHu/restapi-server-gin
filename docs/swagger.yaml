@@ -1,0 +1,29 @@
+basePath: /api/v1
+host: localhost:8080
+info:
+  contact:
+    email: huliquns@126.com
+    name: Liqun Hu
+  description: This is a sample server celler server.
+  title: Rest API
+  version: "1.0"
+paths:
+  /api/v1//Test/GetTestById:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - in: query
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses: {}
+      summary: GetTestById
+      tags:
+      - Test
+securityDefinitions:
+  BasicAuth:
+    type: basic
+swagger: "2.0"

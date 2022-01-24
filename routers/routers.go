@@ -3,7 +3,10 @@ package routers
 import (
 	"time"
 
+	_ "github.com/LiqunHu/restapi-server-gin/docs"
 	"github.com/gin-gonic/gin"
+	ginSwagger "github.com/swaggo/gin-swagger"
+	"github.com/swaggo/gin-swagger/swaggerFiles"
 
 	"github.com/LiqunHu/restapi-server-gin/pkg/logger"
 	"github.com/LiqunHu/restapi-server-gin/pkg/middleware"
@@ -25,6 +28,7 @@ func InitRouter() *gin.Engine {
 	r.Use(middleware.RecoveryWithZap(logger.Logger().Desugar(), true))
 
 	r.POST("/api/auth", service.Echo)
+	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	var serversV1 = [...]map[string]gin.HandlerFunc{UserHandleMap, TestHandleMap}
 

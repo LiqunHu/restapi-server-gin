@@ -15,6 +15,12 @@ func Test(c *gin.Context) {
 	})
 }
 
+// @Summary GetTestById
+// @Tags         Test
+// @Accept       json
+// @Produce      json
+// @Param object query GetTestByIdIN true "请求参数"
+// @Router /api/v1//Test/GetTestById [post]
 func GetTestById(c *gin.Context) {
 	var doc GetTestByIdIN
 	if err := c.ShouldBind(&doc); err != nil {
