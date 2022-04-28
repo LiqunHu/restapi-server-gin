@@ -59,7 +59,7 @@ func updateVersionForUpdateCallback(db *gorm.DB) {
 		fmt.Println(db.Statement.Schema)
 		field := db.Statement.Schema.LookUpField("Version")
 		if field != nil {
-			val, _ := field.ValueOf(db.Statement.ReflectValue)
+			val, _ := field.ValueOf(db.Statement.Context, db.Statement.ReflectValue)
 			db.Statement.SetColumn("Version", val.(int)+1)
 		}
 	}
