@@ -10,7 +10,6 @@ import (
 
 	"github.com/LiqunHu/restapi-server-gin/pkg/logger"
 	"github.com/LiqunHu/restapi-server-gin/pkg/middleware"
-	"github.com/LiqunHu/restapi-server-gin/service"
 )
 
 func InitRouter() *gin.Engine {
@@ -27,8 +26,15 @@ func InitRouter() *gin.Engine {
 	//   - stack means whether output the stack info.
 	r.Use(middleware.RecoveryWithZap(logger.Logger().Desugar(), true))
 
-	r.POST("/api/auth", service.Echo)
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+
+	var serversAuth = [...]map[string]gin.HandlerFunc{AuthHandleMap}
+	apiAuth := r.Group("/api/auth")
+	for idx, _ := range serversAuth {
+		for k, v := range serversAuth[idx] {
+			apiAuth.POST(k, v)
+		}
+	}
 
 	var serversV1 = [...]map[string]gin.HandlerFunc{UserHandleMap, TestHandleMap}
 

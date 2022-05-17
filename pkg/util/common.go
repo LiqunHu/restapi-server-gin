@@ -1,9 +1,7 @@
 package util
 
 import (
-	"encoding/json"
 	"errors"
-	"fmt"
 	"reflect"
 
 	"github.com/LiqunHu/restapi-server-gin/pkg/e"
@@ -34,15 +32,15 @@ func Error(code string) (int, gin.H) {
 }
 
 func Fail(err error) (int, gin.H) {
-	var typeError *json.UnmarshalTypeError
+	typeError := errors.New("github.com/go-playground/validator/v10.ValidationErrors")
 
 	if errors.As(err, &typeError) {
-		JsonErr := err.(*json.UnmarshalTypeError)
 		return 700, gin.H{
 			"errno": "INPUT",
-			"msg":   fmt.Sprintf(("'%s' 字段错误"), JsonErr.Field),
+			"msg":   err.Error(),
 		}
 	}
+
 	return 500, gin.H{
 		"errno": "-1",
 		"msg":   err.Error(),
