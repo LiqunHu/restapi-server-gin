@@ -1,5 +1,6 @@
 ### VS Code ###
 # .vscode/
 logs/*
+docs/*
 __debug_bin
 restapi-server-gin

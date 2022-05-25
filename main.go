@@ -30,9 +30,11 @@ func init() {
 // @contact.email  huliquns@126.com
 
 // @host      localhost:8080
-// @BasePath  /api/v1
+// @BasePath  /
 
-// @securityDefinitions.basic  BasicAuth
+// @securityDefinitions.apikey
+// @in header
+// @name Authorization
 func main() {
 	router := routers.InitRouter()
 	s := &http.Server{

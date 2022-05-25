@@ -1,7 +1,6 @@
 package util
 
 import (
-	"errors"
 	"reflect"
 
 	"github.com/LiqunHu/restapi-server-gin/pkg/e"
@@ -32,14 +31,14 @@ func Error(code string) (int, gin.H) {
 }
 
 func Fail(err error) (int, gin.H) {
-	typeError := errors.New("github.com/go-playground/validator/v10.ValidationErrors")
+	// typeError := errors.New("github.com/go-playground/validator/v10.ValidationErrors")
 
-	if errors.As(err, &typeError) {
-		return 700, gin.H{
-			"errno": "INPUT",
-			"msg":   err.Error(),
-		}
-	}
+	// if errors.As(err, &typeError) {
+	// 	return 700, gin.H{
+	// 		"errno": "INPUT",
+	// 		"msg":   err.Error(),
+	// 	}
+	// }
 
 	return 500, gin.H{
 		"errno": "-1",
