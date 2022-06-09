@@ -6,6 +6,10 @@ import (
 	"crypto/cipher"
 	"encoding/base64"
 	"errors"
+	"time"
+
+	"github.com/LiqunHu/restapi-server-gin/pkg/setting"
+	"github.com/dgrijalva/jwt-go"
 )
 
 func AesECBDecrypt(cptd string, key []byte) (string, error) {
@@ -140,4 +144,38 @@ func (x *ecbDecrypter) CryptBlocks(dst, src []byte) {
 		src = src[x.blockSize:]
 		dst = dst[x.blockSize:]
 	}
+}
+
+type Claims struct {
+	LoginType string `json:"type"`
+	UserId    string `json:"password"`
+	jwt.StandardClaims
+}
+
+func User2Token(loginType string, userId string) (string, error) {
+	var expires int
+	if loginType == "MOBILE" || loginType == "OA" || loginType == "MP" {
+		expires = setting.AppSetting.MOBILE_TOKEN_AGE
+	} else if loginType == "SYSTEM" {
+		expires = setting.AppSetting.SYSTEM_TOKEN_AGE
+	} else {
+		expires = setting.AppSetting.TOKEN_AGE
+	}
+
+	nowTime := time.Now()
+	expireTime := nowTime.Add(time.Duration(expires) * time.Second)
+
+	claims := Claims{
+		loginType,
+		userId,
+		jwt.StandardClaims{
+			ExpiresAt: expireTime.Unix(),
+		},
+	}
+
+	tokenClaims := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+
+	token, err := tokenClaims.SignedString([]byte(setting.AppSetting.SecretKey))
+
+	return token, err
 }

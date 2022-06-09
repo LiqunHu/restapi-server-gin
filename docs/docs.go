@@ -26,7 +26,55 @@ var doc = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/api/v1//Test/GetTestById": {
+        "/api/auth/signin": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Signin",
+                "parameters": [
+                    {
+                        "maxLength": 100,
+                        "type": "string",
+                        "name": "IdentifyCode",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "enum": [
+                            "WEB",
+                            "MOBILE"
+                        ],
+                        "type": "string",
+                        "name": "LoginType",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "maxLength": 100,
+                        "type": "string",
+                        "name": "MagicNo",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "maxLength": 100,
+                        "type": "string",
+                        "name": "Username",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/api/v1/Test/GetTestById": {
             "post": {
                 "consumes": [
                     "application/json"
@@ -51,8 +99,10 @@ var doc = `{
         }
     },
     "securityDefinitions": {
-        "BasicAuth": {
-            "type": "basic"
+        "": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
         }
     }
 }`
@@ -70,7 +120,7 @@ type swaggerInfo struct {
 var SwaggerInfo = swaggerInfo{
 	Version:     "1.0",
 	Host:        "localhost:8080",
-	BasePath:    "/api/v1",
+	BasePath:    "/",
 	Schemes:     []string{},
 	Title:       "Rest API",
 	Description: "This is a sample server celler server.",

@@ -8,10 +8,15 @@ import (
 )
 
 type App struct {
-	AppName   string
-	DebugFlag bool
-	SecretKey string
-	PageSize  int
+	AppName           string
+	DebugFlag         bool
+	SecretKey         string
+	PageSize          int
+	TOKEN_AGE         int
+	MOBILE_TOKEN_AGE  int
+	SYSTEM_TOKEN_AGE  int
+	SMS_TOKEN_AGE     int
+	CAPTCHA_TOKEN_AGE int
 
 	LogSavePath string
 }

@@ -1,4 +1,4 @@
-basePath: /api/v1
+basePath: /
 host: localhost:8080
 info:
   contact:
@@ -8,7 +8,40 @@ info:
   title: Rest API
   version: "1.0"
 paths:
-  /api/v1//Test/GetTestById:
+  /api/auth/signin:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - in: query
+        maxLength: 100
+        name: IdentifyCode
+        required: true
+        type: string
+      - enum:
+        - WEB
+        - MOBILE
+        in: query
+        name: LoginType
+        required: true
+        type: string
+      - in: query
+        maxLength: 100
+        name: MagicNo
+        required: true
+        type: string
+      - in: query
+        maxLength: 100
+        name: Username
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses: {}
+      summary: Signin
+      tags:
+      - Auth
+  /api/v1/Test/GetTestById:
     post:
       consumes:
       - application/json
@@ -24,6 +57,8 @@ paths:
       tags:
       - Test
 securityDefinitions:
-  BasicAuth:
-    type: basic
+  "":
+    in: header
+    name: Authorization
+    type: apiKey
 swagger: "2.0"

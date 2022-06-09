@@ -35,12 +35,20 @@ func Signin(c *gin.Context) {
 		return
 	}
 
-	decrypted, err := util.AesECBDecrypt("Fuh/MikqJyX+/Ca0P887WA==", []byte("e10adc3949ba59abbe56e057f20f883e"))
+	decrypted, err := util.AesECBDecrypt(doc.IdentifyCode, []byte(user.UserPassword))
 	if err != nil {
 		c.JSON(util.Fail(err))
 		return
 	}
 	logger.Debug(decrypted)
+	if decrypted != "" && (decrypted == user.UserUsername || decrypted == user.UserPhone) {
+		lsession_token, err := util.User2Token(doc.LoginType, user.UserId)
+		if err != nil {
+			c.JSON(util.Fail(err))
+			return
+		}
+		logger.Info(lsession_token)
+	}
 
 	c.JSON(util.Success(user))
 }
